@@ -4,6 +4,7 @@ import time
 import os
 
 # Path to DTrace executable
+
 DTRACE_PATH = r"C:\Program Files\DTrace\dtrace.exe"
 
 # Check if DTrace is available
