@@ -11,15 +11,18 @@ if not os.path.exists(DTRACE_PATH):
     print("DTrace is not installed or cannot be found.")
     exit()
 
-
 # Function to start DTrace monitoring for a process by PID
 def monitor_process(pid):
     print(f"Monitoring process with PID: {pid}")
     try:
+        dtrace_cmd = [DTRACE_PATH, '-n', f'syscall::*:entry /pid == {pid}/ {{trace(execname); }}']
+
+        subprocess.Popen(dtrace_cmd)
         # Run the DTrace command to monitor system calls and API calls for the given PID
-        subprocess.Popen([DTRACE_PATH, '-n', f'syscall:::{pid} == {pid}'])
+        #subprocess.Popen([DTRACE_PATH, '-n', f'syscall:::{pid} == {pid}'])
     except Exception as e:
         print(f"Error starting DTrace for PID {pid}: {e}")
+
 
 
 # Function to monitor new processes
