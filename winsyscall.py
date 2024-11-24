@@ -16,7 +16,7 @@ if not os.path.exists(DTRACE_PATH):
 def monitor_process(pid):
     print(f"Monitoring process with PID: {pid}")
     try:
-        dtrace_cmd = [DTRACE_PATH, '-n', f'syscall::*:entry /pid == {pid}/ {{trace(execname); }}']
+        dtrace_cmd = [DTRACE_PATH,'-n',f'syscall:::entry /pid == {pid}/ {{ trace(walltimestamp); trace(execname); }}']
 
         subprocess.Popen(dtrace_cmd)
         # Run the DTrace command to monitor system calls and API calls for the given PID
