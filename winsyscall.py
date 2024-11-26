@@ -23,13 +23,7 @@ def monitor_process(pid):
     print(f"Starting DTrace monitoring for PID: {pid}")
     try:
         # DTrace script to monitor system calls for the process
-        dtrace_script = f'''
-        syscall:::entry
-        /pid == {pid}/
-        {{
-            printf("%d, %Y, %s, %s, %s\\n", pid, walltimestamp, execname, probefunc, copyinstr(arg0));
-        }}
-        '''
+        dtrace_script = f''' syscall:::entry /pid == {pid}/ {{printf("%d, %Y, %s, %s, %s\\n", pid, walltimestamp, execname, probefunc, copyinstr(arg0)); }}'''
         # Open the log file in append mode
         with open(LOG_FILE, "a") as logfile:
             dtrace_cmd = [DTRACE_PATH, "-n", dtrace_script]
